@@ -1,17 +1,20 @@
 package io.atmecs.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -41,8 +44,38 @@ public class Task {
 	
 	@Column(nullable = false)
 	@LastModifiedDate
-	private Date last_login_at;
+	private Date updatedAt;
+	
+	@CreatedBy
+	private String assignedBy;
+	
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@JoinColumn(name = "taskid",referencedColumnName = "taskid")
+	private List<Status> status;
 
+	private Date assignedDate;
+	
+	private Date modifiedDate;
+	
+	
+	public Date getModifiedDate() {
+		return modifiedDate;
+	}
+	public void setModifiedDate(Date modifiedDate) {
+		this.modifiedDate = modifiedDate;
+	}
+	public Date getAssignedDate() {
+		return assignedDate;
+	}
+	public void setAssignedDate(Date assignedDate) {
+		this.assignedDate = assignedDate;
+	}
+	public List<Status> getStatus() {
+		return status;
+	}
+	public void setStatus(List<Status> status) {
+		this.status = status;
+	}
 	public int getTaskid() {
 		return taskid;
 	}
@@ -68,12 +101,20 @@ public class Task {
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
-	public Date getlast_login_at() {
-		return last_login_at;
+	public Date getUpdatedAt() {
+		return updatedAt;
 	}
-	public void setlast_login_at(Date last_login_at) {
-		this.last_login_at = last_login_at;
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
 	}
+	public String getAssignedBy() {
+		return assignedBy;
+	}
+	public void setAssignedBy(String assignedBy) {
+		this.assignedBy = assignedBy;
+	}
+
+
 
 
 	

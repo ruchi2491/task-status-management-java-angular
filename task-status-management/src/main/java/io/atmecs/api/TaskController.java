@@ -4,8 +4,6 @@
 package io.atmecs.api;
 
 import java.util.List;
-import java.util.Optional;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +31,20 @@ public class TaskController {
 
 	@GetMapping
 	public ResponseEntity<List<Task>> findAll() {
-		return ResponseEntity.ok(taskService.findAll());
+		List<Task> tasks=taskService.findAll();
+		if(tasks.isEmpty()) {
+			ResponseEntity.notFound();
+		}
+		return ResponseEntity.ok(tasks);
 	}
 
 	@PostMapping
 	public ResponseEntity<Task> save(@Valid @RequestBody Task task) {
-		return ResponseEntity.ok(taskService.save(task));
+		Task taskSave=taskService.save(task);
+		if(taskSave.equals(null) ) {
+			ResponseEntity.notFound();
+		}
+		return ResponseEntity.ok(taskSave);
 	}
 
 	@GetMapping("/{empid}")
